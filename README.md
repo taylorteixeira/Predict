@@ -50,8 +50,21 @@ Os modelos treinados (`Random Forest` e `Linear Regression`) e o scaler foram sa
 * `model_and_data.joblib`: Arquivo contendo o melhor modelo e o dataframe original.
 
 
-## Dependências
+### Dependências
 
 * pandas
 * scikit-learn
 * joblib
+
+## Exemplo de Requisição
+
+```bash
+curl -X POST http://127.0.0.1:5000/predict \
+     -H "Content-Type: application/json" \
+     -d '{
+           "Product": "Inspiron 15",
+           "TypeName": "Notebook",
+           "Ram": 8,
+           "OS": "Windows 10"
+         }'
+		
