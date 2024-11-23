@@ -59,7 +59,7 @@ Os modelos treinados (`Random Forest` e `Linear Regression`) e o scaler foram sa
 ## Exemplo de Requisição
 
 ```bash
-curl -X POST http://127.0.0.1:5000/predict \
+curl -X POST https://predict-q3j1.onrender.com/predict \
      -H "Content-Type: application/json" \
      -d '{
            "Product": "Inspiron 15",
