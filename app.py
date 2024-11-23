@@ -2,51 +2,51 @@ import pandas as pd
 from joblib import dump, load
 from flask import Flask, request, jsonify, render_template
 
-# from sklearn.model_selection import train_test_split
-# from sklearn.ensemble import RandomForestRegressor
-# from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 
-# # Carregar o dataset e treinar o modelo
-# dataset_path = "laptop_prices.csv"  # Certifique-se de usar o caminho correto
-# df = pd.read_csv(dataset_path)
+# Carregar o dataset e treinar o modelo
+dataset_path = "laptop_prices.csv"  # Certifique-se de usar o caminho correto
+df = pd.read_csv(dataset_path)
 
-# # Preenchendo valores ausentes
-# df = df.dropna()  # Remove qualquer linha com valores nulos
+# Preenchendo valores ausentes
+df = df.dropna()  # Remove qualquer linha com valores nulos
 
-# # Codificação de variáveis categóricas para números
-# categorical_cols = df.select_dtypes(include=['object']).columns
-# df_encoded = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
+# Codificação de variáveis categóricas para números
+categorical_cols = df.select_dtypes(include=['object']).columns
+df_encoded = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
 
-# # Separando variáveis independentes e dependentes
-# X = df_encoded.drop("Price_euros", axis=1)
-# y = df_encoded["Price_euros"]
+# Separando variáveis independentes e dependentes
+X = df_encoded.drop("Price_euros", axis=1)
+y = df_encoded["Price_euros"]
 
-# # Divisão dos dados em treino e teste
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+# Divisão dos dados em treino e teste
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# # Normalização
-# scaler = StandardScaler()
-# X_train_scaled = scaler.fit_transform(X_train)
-# X_test_scaled = scaler.transform(X_test)
+# Normalização
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-# # Treinamento do modelo Random Forest
-# random_forest_model = RandomForestRegressor(random_state=42)
-# random_forest_model.fit(X_train_scaled, y_train)
+# Treinamento do modelo Random Forest
+random_forest_model = RandomForestRegressor(random_state=42)
+random_forest_model.fit(X_train_scaled, y_train)
 
-# # Avaliação do modelo
-# y_pred_rf = random_forest_model.predict(X_test_scaled)
-# mae_rf = mean_absolute_error(y_test, y_pred_rf)
-# mse_rf = mean_squared_error(y_test, y_pred_rf)
-# r2_rf = r2_score(y_test, y_pred_rf)
+# Avaliação do modelo
+y_pred_rf = random_forest_model.predict(X_test_scaled)
+mae_rf = mean_absolute_error(y_test, y_pred_rf)
+mse_rf = mean_squared_error(y_test, y_pred_rf)
+r2_rf = r2_score(y_test, y_pred_rf)
 
-# print("\nRandom Forest:")
-# print("  MAE:", mae_rf)
-# print("  MSE:", mse_rf)
-# print("  R²:", r2_rf)
+print("\nRandom Forest:")
+print("  MAE:", mae_rf)
+print("  MSE:", mse_rf)
+print("  R²:", r2_rf)
 
-# # Salvando o modelo, scaler e colunas do conjunto de treino
-# dump({'model': random_forest_model, 'scaler': scaler, 'X_train_columns': X.columns}, 'model_and_scaler.joblib')
+# Salvando o modelo, scaler e colunas do conjunto de treino
+dump({'model': random_forest_model, 'scaler': scaler, 'X_train_columns': X.columns}, 'model_and_scaler.joblib')
 
 # API Flask
 app = Flask(__name__)
