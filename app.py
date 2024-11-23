@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, render_template
 # from sklearn.model_selection import train_test_split
 # from sklearn.ensemble import RandomForestRegressor
 # from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-# from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler
 
 # # Carregar o dataset e treinar o modelo
 # dataset_path = "laptop_prices.csv"  # Certifique-se de usar o caminho correto
