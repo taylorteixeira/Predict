@@ -38,7 +38,6 @@
     }
 
     select.form-control,
-    input[type="text"],
     input[type="number"] {
       width: 100%;
       padding: 8px;
@@ -55,6 +54,13 @@
       text-decoration: none;
       border-radius: 4px;
       cursor: pointer;
+      text-align: center;
+      border: none;
+    }
+
+    .btn:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
     }
 
     .alert {
@@ -115,7 +121,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="OS">OS</label>
+        <label for="OS">Operating System</label>
         <select class="form-control" id="OS" name="OS" required>
           <option value="">Select OS</option>
           <option value="macOS">macOS</option>
@@ -124,7 +130,7 @@
           <option value="Mac OS X">Mac OS X</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">Predict</button>
+      <button type="submit" class="btn">Predict</button>
     </form>
     <div id="result" class="mt-3"></div>
   </div>
@@ -134,6 +140,9 @@
 
       const formData = new FormData(this);
       const data = Object.fromEntries(formData);
+
+      // Convert Ram to an integer (it's sent as a string from the form)
+      data.Ram = parseInt(data.Ram);
 
       try {
         const response = await fetch('/predict', {
@@ -145,17 +154,18 @@
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error('Prediction failed');
         }
 
         const result = await response.json();
-        if (result.error) {
-          document.getElementById('result').innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
-        } else {
+
+        if (result.predicted_price) {
           document.getElementById('result').innerHTML = `<div class="alert alert-success">Predicted Price: €${result.predicted_price.toFixed(2)}</div>`;
+        } else {
+          document.getElementById('result').innerHTML = `<div class="alert alert-danger">Error: ${result.error}</div>`;
         }
       } catch (error) {
-        document.getElementById('result').innerHTML = `<div class="alert alert-danger">An error occurred: ${error.message}</div>`;
+        document.getElementById('result').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
       }
     });
   </script>
